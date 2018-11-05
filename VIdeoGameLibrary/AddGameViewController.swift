@@ -8,21 +8,23 @@
 
 import UIKit
 
-class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     
     //Variables
     var newGame: Game?
     var chosenRating: Game.Rating?
     var chosenGenre: Game.Genre?
+    let library = Library.sharedInstance
     
     let genres = ["Action", "Adventure", "Battle Royale", "Platformer", "Puzzle", "Racing", "RPG", "Shooter", "Sports", "Misc."]
     
     //Input Fields
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var ratingSegment: UISegmentedControl!
     @IBOutlet weak var genrePickerView: UIPickerView!
+    @IBOutlet weak var descriptionTextView: UITextView!
     
+    //Picker View Functions
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -80,7 +82,7 @@ class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         //If any text fields are empty...
         guard
             let titleText = titleTextField.text, !titleText.isEmpty,
-            let descriptionText = descriptionTextField.text, !descriptionText.isEmpty,
+            let descriptionText = descriptionTextView.text, !descriptionText.isEmpty,
             let rating = chosenRating,
             let genre = chosenGenre
             else {
@@ -93,9 +95,12 @@ class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
         //Else, add a game
         newGame = Game(title: titleText, description: descriptionText, genre: genre, rating: rating, availability: .checkedIn)
-        print(newGame?.title as Any)
-        print(newGame?.description as Any)
-        print(newGame?.genre as Any)
-        print(newGame?.rating as Any)
+        self.library.games.append(newGame!)
+        //And notify the user that the game has been added
+        let completionNotification = UIAlertController(title: "Game Added", message: "\(newGame!.title) has successfully been added to your library.", preferredStyle: UIAlertController.Style.alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) {UIAlertAction in}
+        completionNotification.addAction(dismissAction)
+        self.present(completionNotification, animated: true, completion: nil)
+        return
     }
 }

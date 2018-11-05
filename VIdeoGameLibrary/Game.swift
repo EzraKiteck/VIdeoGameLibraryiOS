@@ -10,25 +10,35 @@ import UIKit
 
 class Game {
     
-    enum Genre {
-        case action
-        case adventure
-        case battleRoyale
-        case platformer
-        case puzzle
-        case racing
-        case rpg
-        case shooter
-        case sports
-        case misc
+    enum Genre: String {
+        case action = "Action"
+        case adventure = "Adventure"
+        case battleRoyale = "Battle Royale"
+        case platformer = "Platformer"
+        case puzzle = "Puzzle"
+        case racing = "Racing"
+        case rpg = "RPG"
+        case shooter = "Shooter"
+        case sports = "Sports"
+        case misc = "Misc."
         
     }
-    enum Rating {
-        case E
-        case E10
-        case T
-        case M
-        case AO
+    enum Rating: String{
+        case E = "Everyone"
+        case E10 = "Ten Plus"
+        case T = "Teen"
+        case M = "Mature"
+        case AO = "Adults Only"
+        
+        var symbol: String {
+            switch self {
+            case .E: return "E"
+            case .E10: return "E10"
+            case .T: return "T"
+            case .M: return "M"
+            case .AO: return "AO"
+            }
+        }
     }
     enum Availability {
         case checkedIn
