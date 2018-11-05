@@ -16,6 +16,7 @@ class LibraryCell: UITableViewCell {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var availabilityView: UIView!
+    var game: Game = Game(title: "Game", description: "Description", genre: .action, rating: .E, availability: .checkedIn)
     
     //Used to put the details of a game onto a cell
     func setup(game: Game) {

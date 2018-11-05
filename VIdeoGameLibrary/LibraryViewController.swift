@@ -39,7 +39,7 @@ class LibraryViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     
     //Fills game array with preset games
     func PopulateGames() {
-        //3 preset games
+        //Three preset games
         library.games.append(Game(title: "Starlink", description: "The modern Starfox everyone wanted", genre: .action, rating: .E10, availability: .checkedIn))
         library.games.append(Game(title: "Towerfall", description: "The multiplayer indie gem", genre: .action, rating: .E, availability: .checkedIn))
         library.games.append(Game(title: "Undertale", description: "The RPG where no one has to die!", genre: .rpg, rating: .E10, availability: .checkedIn))
@@ -49,15 +49,16 @@ class LibraryViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     func checkOut(at indexPath: IndexPath) {
         let game = self.library.games[indexPath.row]
         
+        //Sets availability and due date
         let calendar = Calendar(identifier: .gregorian)
         let dueDate = calendar.date(byAdding: .day, value: 7, to: Date())!
-        
         game.availability = .checkedOut(dueDate: dueDate)
         (gameTableView.cellForRow(at: indexPath) as! LibraryCell).setup(game: game)
-        
     }
     func checkIn(at indexPath: IndexPath) {
         let game = self.library.games[indexPath.row]
+        
+        //Sets availability
         game.availability = .checkedIn
         (gameTableView.cellForRow(at: indexPath) as! LibraryCell).setup(game: game)
     }
@@ -65,7 +66,6 @@ class LibraryViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     //Sets the title for the empty view
     func title(forEmptyDataSet scrollView: UIScrollView?) -> NSAttributedString? {
         let text = "Your library is currently empty."
-        
         let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 24.0), NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         
         return NSAttributedString(string: text, attributes: attributes)
@@ -73,11 +73,9 @@ class LibraryViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     //Sets the description for the empty view
     func description(forEmptyDataSet scrollView: UIScrollView?) -> NSAttributedString? {
         let text = "Try adding some games!"
-        
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byWordWrapping
         paragraph.alignment = .center
-        
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16.0), NSAttributedString.Key.foregroundColor: UIColor.darkGray, NSAttributedString.Key.paragraphStyle: paragraph]
         
         return NSAttributedString(string: text, attributes: attributes)
@@ -88,6 +86,11 @@ class LibraryViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
         
         return NSAttributedString(string: "Add Game", attributes: attributes)
     }
+    //Sends user to Add Game screen when Empty Screen button is pressed
+    func emptyDataSetDidTapButton(_ scrollView: UIScrollView!) {
+        performSegue(withIdentifier: "unwindToAddGame", sender: Any.self)
+    }
+    
 }
 
 //Manages the cells
@@ -96,23 +99,22 @@ extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
         return library.games.count
     }
     
-    //Returns if the empty data set should disply
+    //Returns whether or not the empty data set should display
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView?) -> Bool {
         return true
     }
-
     
+    //Specifies the index, stores a game in the cell, and puts everything in their specific labels
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath) as! LibraryCell
-        
         let game = library.games[indexPath.row]
+        cell.game = game
         cell.setup(game: game)
         
         return cell
     }
     
-    //Checks to to if there is an edit function, this is used to add swipes
+    //Checks if there is an edit function (this is used to add swipes)
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         // We create the delete action, with a closure associated with it.
@@ -127,23 +129,26 @@ extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
         
         // If the game is checked out, we create and return the check in action.
         // If the game is checked in, we create and return the check out action.
-        
         switch game.availability {
         case .checkedIn:
             let checkOutAction = UITableViewRowAction(style: .default, title: "Check Out") { _, indexPath in
                 self.checkOut(at: indexPath)
             }
-            
+            //Create a check out action
             return [checkOutAction, deleteAction]
             
         case .checkedOut:
             let checkInAction = UITableViewRowAction(style: .normal, title: "Check In") { _, indexPath in
                 self.checkIn(at: indexPath)
             }
-            
+            //Create a check in action
             return [checkInAction, deleteAction]
-            
         }
     }
-    
+    //Handles passing the game to the details screen
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? DetailsViewController {
+            vc.game = (sender as! LibraryCell).game
+        }
+    }
 }

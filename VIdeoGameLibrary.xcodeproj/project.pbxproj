@@ -72,16 +72,16 @@
 			isa = PBXGroup;
 			children = (
 				7446303B21875D89002999BE /* AppDelegate.swift */,
-				7446303F21875D89002999BE /* Main.storyboard */,
+				7446304D21875DC0002999BE /* LibraryViewController.swift */,
+				744630532188CD93002999BE /* AddGameViewController.swift */,
 				74C34EC32190ACB500541AB9 /* DetailsViewController.swift */,
 				74B865EB218B536300B1B220 /* LibraryCell.swift */,
-				744630532188CD93002999BE /* AddGameViewController.swift */,
+				7446305121877DE9002999BE /* Library.swift */,
+				7446304F21877812002999BE /* Game.swift */,
+				7446303F21875D89002999BE /* Main.storyboard */,
 				7446304221875D8B002999BE /* Assets.xcassets */,
 				7446304421875D8B002999BE /* LaunchScreen.storyboard */,
 				7446304721875D8B002999BE /* Info.plist */,
-				7446304D21875DC0002999BE /* LibraryViewController.swift */,
-				7446305121877DE9002999BE /* Library.swift */,
-				7446304F21877812002999BE /* Game.swift */,
 			);
 			path = VIdeoGameLibrary;
 			sourceTree = "<group>";

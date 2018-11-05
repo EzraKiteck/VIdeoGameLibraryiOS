@@ -16,6 +16,7 @@ class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var chosenGenre: Game.Genre?
     let library = Library.sharedInstance
     
+    //Array for picker view
     let genres = ["Action", "Adventure", "Battle Royale", "Platformer", "Puzzle", "Racing", "RPG", "Shooter", "Sports", "Misc."]
     
     //Input Fields
@@ -33,9 +34,6 @@ class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return genres.count
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //Insert code here for when a row is selected
     }
     
     @IBAction func addGameButtonPressed(_ sender: Any) {
@@ -93,9 +91,11 @@ class AddGameViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                 self.present(errorAlert, animated: true, completion: nil)
                 return
         }
+        
         //Else, add a game
         newGame = Game(title: titleText, description: descriptionText, genre: genre, rating: rating, availability: .checkedIn)
         self.library.games.append(newGame!)
+        
         //And notify the user that the game has been added
         let completionNotification = UIAlertController(title: "Game Added", message: "\(newGame!.title) has successfully been added to your library.", preferredStyle: UIAlertController.Style.alert)
         let dismissAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) {UIAlertAction in}

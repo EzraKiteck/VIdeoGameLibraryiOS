@@ -10,6 +10,7 @@ import UIKit
 
 class Game {
     
+    //Genre enum
     enum Genre: String {
         case action = "Action"
         case adventure = "Adventure"
@@ -23,6 +24,7 @@ class Game {
         case misc = "Misc."
         
     }
+    //Rating enum
     enum Rating: String{
         case E = "Everyone"
         case E10 = "Ten Plus"
@@ -40,17 +42,20 @@ class Game {
             }
         }
     }
+    //Availability enum
     enum Availability {
         case checkedIn
         case checkedOut(dueDate: Date)
     }
     
+    //Variables
     let title: String
     let description: String
     let genre: Genre
     let rating: Rating
     var availability: Availability
     
+    //Initializer
     init(title: String, description: String, genre: Genre, rating: Rating, availability: Availability) {
         self.title = title
         self.description = description
